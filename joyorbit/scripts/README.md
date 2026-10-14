@@ -1,0 +1,1 @@
+Preferred source for the exact pinned-source edits, deterministic effects, font atlases, Vorbis regression check, native controller/save adapter and Android embedding recipe; see the parent README for build inputs and licences.

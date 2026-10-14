@@ -1,0 +1,11 @@
+# JoyOrbit Open Golf source adapter
+
+This directory is the preferred source for the JoyOrbit Android controller/save integration, deterministic replacement sounds, font-cache compiler and native package recipe. Open Golf's unchanged MIT rules/physics/scoring are pinned at b9029f1e80c3110ae3d4fc9300854bdaeef96508; preparation clones that exact source into a separate cache and stages changes without modifying the upstream tree. The adapter and build tools are GPL-3.0-or-later, except the synthesized effects which are MIT; full component notices are in theme/licenses. No author endorsement or physical-device acceptance is implied.
+
+## Native source build
+
+Use Python3, a macOS clang host compiler, oggenc from vorbis-tools, Android NDK29.0.14206865 and SDK CMake3.22.1. Set ANDROID_SDK_ROOT to the SDK directory. Place unchanged Archivo-Bold.ttf and Archivo-Regular.ttf in joyorbit/theme/assets/fonts from https://github.com/ilyasturki/pegasus-theme-reprise/tree/d9810b74b1c52a3d7614b46eb7f534f957a992c6/assets/fonts; the recipe rejects files that differ from its SHA256 pins and retains Archivo-OFL.txt. These are redistributable unchanged font inputs, not generated sources.
+
+Run python3 joyorbit/scripts/prepare-golf.py. It generates the preferred WAV audio plus Ogg runtime effects, validates all seven effects with the same patched Vorbis decoder used on Android, compiles cembed from source, generates both font atlases and produces build/golf/android/libjoyorbit_golf.so and source.json under joyorbit. Native input and save code are in scripts/golf-controls.c; the exact upstream edits are in prepare-golf.py. Invalid/oversized storage is archived before fresh storage is created. Held Back returns on release to avoid repeat events closing the resumed library.
+
+embed-golf.py is the JoyOrbit library integration recipe, not a standalone APK exporter: it requires the enclosing library's Gradle wrapper at build/android-apk, Java17 and Android compile SDK36. It compiles the NativeActivity bridge and embeds the fixed library name in an AAR with a post-strip admission hash. No binary release is included here. The library integration source is maintained in PrecisionDataHQ/joyorbit-app; final distribution/source-offer and physical acceptance are separate release requirements.
